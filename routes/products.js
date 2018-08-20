@@ -20,12 +20,13 @@ router.get('/', (req, res, next) => {
                 res.status(200).json({
                     response
                 });
+                
             }
             else {
                 const response = {
                     message: 'Executou o metodo GET que pega todos os produtos',
                     numberOfProducts: docs.length,
-                    products:
+                    products: 
                         docs.map(doc => {
                             return {
                                 name: doc.name,
@@ -91,6 +92,16 @@ router.get('/:productId', (req, res, next) => {
         .select('name price descirption _id')
         .exec()
         .then(doc => {
+            if(doc === null) {
+                res.status(400).json({
+                    product: doc,
+                    message: 'Id inválido',
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:3000/products/'
+                    }
+                })
+            } 
             console.log("From Database", doc);
             if (doc) {
                 res.status(200).json({
@@ -104,7 +115,7 @@ router.get('/:productId', (req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-            res.status(500).json({ error: err });
+            res.status(500).json({ error: err, message: 'Id inválido' });
         });
 });
 

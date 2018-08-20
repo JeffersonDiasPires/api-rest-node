@@ -8,10 +8,19 @@ const mongoose = require('mongoose');
 
 mongoose.connect(
     "mongodb+srv://node-shop:" +
-    process.env.MONGO_ATLAS_PW +
+     process.env.MONGO_ATLAS_PW + 
     "@node-rest-shop-pstoz.mongodb.net/test?retryWrites=true",
-    { useNewUrlParser: true }
+    { useNewUrlParser: true
+            
+     } 
 );
+mongoose.connection.on('connected', function () {  
+    console.log('Mongoose conectado com sucesso' );
+  }); 
+
+mongoose.connection.on('error',function (err) {  
+    console.log('Mongoose deu falha de execução' + err);
+  }); 
 
 mongoose.Promise = global.Promise;
 
